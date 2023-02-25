@@ -2,9 +2,8 @@
 
 namespace NLayer.Core.Service
 {
-    interface IService<T> where T : class
+    public interface IService<T> where T : class
     {
-
         // IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
 
         Task<IEnumerable<T>> GetAllAsync();
