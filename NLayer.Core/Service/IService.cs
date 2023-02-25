@@ -16,10 +16,10 @@ namespace NLayer.Core.Service
 
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
-        void UpdateAsync(T entity);
+        Task UpdateAsync(T entity);
 
-        void DeleteAsync(T entity);
+        Task DeleteAsync(T entity);
 
-        void DeleteRangeAsync(IEnumerable<T> entities);
+        Task DeleteRangeAsync(IEnumerable<T> entities);
     }
 }

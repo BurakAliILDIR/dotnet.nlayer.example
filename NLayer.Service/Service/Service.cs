@@ -51,19 +51,22 @@ namespace NLayer.Service.Service
             return entities;
         }
 
-        public void UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _repository.Update(entity);
+            await _unitOfWork.CommitAsync();
         }
 
-        public void DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _repository.Delete(entity);
+            await _unitOfWork.CommitAsync();
         }
 
-        public void DeleteRangeAsync(IEnumerable<T> entities)
+        public async Task DeleteRangeAsync(IEnumerable<T> entities)
         {
             _repository.DeleteRange(entities);
+            await _unitOfWork.CommitAsync();
         }
     }
 }
