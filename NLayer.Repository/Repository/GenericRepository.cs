@@ -15,12 +15,12 @@ namespace NLayer.Repository.Repository
             this._dbSet = dbContext.Set<T>();
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll()
         {
             return _dbSet.AsNoTracking().AsQueryable();
         }
 
-        public async Task<T> FindAsync(int id)
+        public async Task<T> FindByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }

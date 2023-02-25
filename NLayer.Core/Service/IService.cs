@@ -4,24 +4,22 @@ namespace NLayer.Core.Service
 {
     public interface IService<T> where T : class
     {
-        // IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
-
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<T> GetAsync(int id);
+        Task<T> FindByIdAsync(int id);
 
         IQueryable<T> Where(Expression<Func<T, bool>> expression);
 
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
 
-        Task AddAsync(T entity);
+        Task<T> AddAsync(T entity);
 
-        Task AddRangeAsync(IEnumerable<T> entities);
+        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
-        Task UpdateAsync(T entity);
+        void UpdateAsync(T entity);
 
-        Task DeleteAsync(T entity);
+        void DeleteAsync(T entity);
 
-        Task DeleteRangeAsync(IEnumerable<T> entities);
+        void DeleteRangeAsync(IEnumerable<T> entities);
     }
 }
