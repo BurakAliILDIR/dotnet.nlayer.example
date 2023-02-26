@@ -10,18 +10,18 @@ namespace NLayer.API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryService _service;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService service)
         {
-            _categoryService = categoryService;
+            _service = service;
         }
 
 
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetSingleCategoryByIdWithProducts(int id)
         {
-            var categoryWithProductsDto = await _categoryService.GetSingleCategoryByIdWithProductsAsync(id);
+            var categoryWithProductsDto = await _service.GetSingleCategoryByIdWithProductsAsync(id);
 
             return Ok(CustomResponseDTO<CategoryWithProductsDTO>.Success(categoryWithProductsDto, 200));
         }
