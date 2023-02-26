@@ -1,5 +1,8 @@
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using NLayer.Core.DTO;
 using NLayer.Core.Repository;
 using NLayer.Core.Service;
 using NLayer.Core.UnitOfWork;
@@ -8,15 +11,21 @@ using NLayer.Repository.Repository;
 using NLayer.Repository.UnitOfWork;
 using NLayer.Service.Mapping;
 using NLayer.Service.Service;
+using NLayer.Service.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers();/*.AddFluentValidation(x=> x.RegisterValidatorsFromAssemblyContaining<ProductDTOValidator>());*/
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// builder.Services.AddValidatorsFromAssemblyContaining<ProductDTOValidator>();
+
+builder.Services.AddScoped<IValidator<ProductDTO>, ProductDTOValidator>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
