@@ -18,21 +18,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-builder.Services.AddControllers();/*.AddFluentValidation(x=> x.RegisterValidatorsFromAssemblyContaining<ProductDTOValidator>());*/
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddValidatorsFromAssemblyContaining<ProductDTOValidator>();
+// Validators
+ builder.Services.AddValidatorsFromAssemblyContaining<ProductDTOValidator>();
 
-builder.Services.AddScoped<IValidator<ProductDTO>, ProductDTOValidator>();
-
+// Patterns and Tools
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
+
+// Product Repository
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
+// Category Repository
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
