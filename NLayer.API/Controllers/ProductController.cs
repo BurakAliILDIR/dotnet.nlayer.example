@@ -7,7 +7,7 @@ using NLayer.Core.Service;
 
 namespace NLayer.API.Controllers
 {
-    [Route("api/products")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
