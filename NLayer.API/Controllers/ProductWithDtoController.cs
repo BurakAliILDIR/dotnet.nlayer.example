@@ -1,24 +1,21 @@
-﻿using AutoMapper;
-using FluentValidation;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.API.Filter;
 using NLayer.Core.DTO;
 using NLayer.Core.Entity;
 using NLayer.Core.Service;
-using NLayer.Service.Validation;
 
 namespace NLayer.API.Controllers
 {
-    public class ProductController : BaseController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductWithDtoController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IProductService _service;
+        private readonly IProductServiceWithDto<ProductDTO> _service;
 
-        public ProductController(IMapper mapper, IProductService service)
+        public ProductWithDtoController(IProductServiceWithDto<ProductDTO> productService)
         {
-            _mapper = mapper;
-            _service = service;
+            _service = productService;
         }
 
         [HttpGet]
@@ -26,9 +23,7 @@ namespace NLayer.API.Controllers
         {
             var products = await _service.GetAllAsync();
 
-            var productsDTO = _mapper.Map<List<ProductDTO>>(products.ToList());
-
-            return Ok(CustomResponseDTO<List<ProductDTO>>.Success(productsDTO, 200));
+            return Ok(CustomResponseDTO<List<ProductDTO>>.Success(products.ToList(), 200));
         }
 
         [HttpGet("[action]")]
@@ -45,20 +40,13 @@ namespace NLayer.API.Controllers
         {
             var product = await _service.FindByIdAsync(id);
 
-            var productDTO = _mapper.Map<ProductDTO>(product);
-
-            return Ok(CustomResponseDTO<ProductDTO>.Success(productDTO, 200));
+            return Ok(CustomResponseDTO<ProductDTO>.Success(product, 200));
         }
 
         [HttpPost]
-
         public async Task<ActionResult> Add(ProductDTO productDTO)
         {
-            Product product = _mapper.Map<Product>(productDTO);
-
-            product = await _service.AddAsync(product);
-
-            productDTO = _mapper.Map<ProductDTO>(product);
+            productDTO = await _service.AddAsync(productDTO);
 
             return Ok(CustomResponseDTO<ProductDTO>.Success(productDTO, 201));
         }
@@ -66,20 +54,15 @@ namespace NLayer.API.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(ProductDTO productDTO)
         {
-            Product product = _mapper.Map<Product>(productDTO);
+            await _service.UpdateAsync(productDTO);
 
-            await _service.UpdateAsync(product);
-
-            return Ok(CustomResponseDTO<string>.Success("", 204));
+            return Ok(CustomResponseDTO<ProductDTO>.Success(productDTO, 204));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-
-            var product = await _service.FindByIdAsync(id);
-
-            await _service.DeleteAsync(product);
+            await _service.DeleteAsync(id);
 
             return Ok(CustomResponseDTO<string>.Success("", 204));
         }

@@ -19,7 +19,7 @@ namespace NLayer.Core.DTO
             return new CustomResponseDTO<T>() { Data = data, StatusCode = statusCode };
         }
 
-        public static CustomResponseDTO<T> Success(int statusCode)
+        public static CustomResponseDTO<T> Success(IEnumerable<ProductDTO> products, int statusCode)
         {
             return new CustomResponseDTO<T>() { StatusCode = statusCode };
         }

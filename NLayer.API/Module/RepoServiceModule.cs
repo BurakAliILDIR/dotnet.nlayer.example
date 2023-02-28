@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using NLayer.Core;
 using NLayer.Core.Repository;
 using NLayer.Core.Service;
 using NLayer.Core.UnitOfWork;
@@ -20,7 +21,16 @@ namespace NLayer.API.Module
 
             builder.RegisterGeneric(typeof(Service<>)).As(typeof(IService<>)).InstancePerLifetimeScope();
 
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterGeneric(typeof(ServiceWithDto<,>)).As(typeof(IServiceWithDto<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ProductServiceWithDto<>)).As(typeof(IProductServiceWithDto<>))
+                .InstancePerLifetimeScope();
+
+
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+
+             
 
             var apiAssembly = Assembly.GetExecutingAssembly();
 

@@ -33,6 +33,8 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMemoryCache();
+
 // Validators
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 // builder.Services.AddScoped<IValidator<ProductDTO>, ProductDTOValidator>();
@@ -68,8 +70,8 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 
 // Autofac
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    containerBuilder.RegisterModule(new RepoServiceModule()));
+builder.Host.ConfigureContainer<ContainerBuilder>(container => container.RegisterModule(new RepoServiceModule()));
+
 
 
 var app = builder.Build();
