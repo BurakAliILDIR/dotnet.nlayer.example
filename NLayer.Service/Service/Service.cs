@@ -3,6 +3,7 @@ using NLayer.Core.Service;
 using NLayer.Core.UnitOfWork;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using NLayer.Service.Exception;
 
 namespace NLayer.Service.Service
 {
@@ -24,7 +25,14 @@ namespace NLayer.Service.Service
 
         public async Task<T> FindByIdAsync(int id)
         {
-            return await _repository.FindByIdAsync(id);
+            T data = await _repository.FindByIdAsync(id);
+
+            if (data == null)
+            {
+                throw new NotFoundException($"{typeof(T).Name} not found.");
+            }
+
+            return data;
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)

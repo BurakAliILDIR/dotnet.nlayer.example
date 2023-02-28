@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NLayer.API.Filter;
 using NLayer.Core.DTO;
 using NLayer.Core.Entity;
 using NLayer.Core.Service;
+using NLayer.Service.Validation;
 
 namespace NLayer.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IProductService _service;
@@ -39,6 +40,7 @@ namespace NLayer.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ServiceFilter(type: typeof(NotFoundFilter<Product>))]
         public async Task<ActionResult> FindById(int id)
         {
             var product = await _service.FindByIdAsync(id);
@@ -49,6 +51,7 @@ namespace NLayer.API.Controllers
         }
 
         [HttpPost]
+
         public async Task<ActionResult> Add(ProductDTO productDTO)
         {
             Product product = _mapper.Map<Product>(productDTO);
